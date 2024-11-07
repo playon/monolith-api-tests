@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Coverage Report</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+      }
+      h1 {
+          text-align: center;
+      }
+      .summary {
+          font-size: 1.2em;
+          margin-bottom: 20px;
+      }
+      .expandable {
+          cursor: pointer;
+          padding: 10px;
+          margin: 5px 0;
+          font-weight: bold;
+      }
+      .expandable.collapsed::before {
+          content: "➕";
+          margin-right: 10px;
+      }
+      .expandable.expanded::before {
+          content: "➖";
+          margin-right: 10px;
+      }
+      .status-group {
+          padding-left: 20px;
+          display: none;
+      }
+      .covered {
+          color: green;
+      }
+      .partially-covered {
+          color: orange;
+      }
+      .not-covered {
+          color: red;
+      }
+      .test-details {
+          padding-left: 40px;
+      }
+      .test-pass {
+          color: green;
+      }
+      .test-fail {
+          color: red;
+      }
+      .expandable.green {
+          background-color: #c8e6c9;
+      }
+      .expandable.yellow {
+          background-color: #fff3b0;
+      }
+      .expandable.red {
+          background-color: #ffcdd2;
+      }
+  </style>
+</head>
+<body>
+<h1>API Coverage Report</h1>
+<div id="summary"></div>
+<div id="coverageDetails"></div>
+<script>
+  function toggleExpand(element) {
+    const nextSibling = element.nextElementSibling;
+    if (element.classList.contains('collapsed')) {
+      element.classList.remove('collapsed');
+      element.classList.add('expanded');
+      nextSibling.style.display = 'block';
+    } else {
+      element.classList.remove('expanded');
+      element.classList.add('collapsed');
+      nextSibling.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>

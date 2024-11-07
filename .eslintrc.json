@@ -1,0 +1,61 @@
+{
+  "root": true,
+  "env": {
+    "browser": false,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": ["@typescript-eslint", "playwright-rules"],
+  "rules": {
+    "playwright-rules/require-metadata-fixture": "error",
+    "playwright-rules/no-metadata-in-hooks": "error",
+    "semi": "error",
+    "no-return-assign": 1,
+    "prefer-const": "warn",
+     "no-console": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-await-in-loop": "off",
+    "eslint-plugin-import/prefer-default-export": "off",
+    "no-return-await": "error",
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-floating-promises": "error",
+    "max-classes-per-file": ["error", 1], // convention, readability
+    "no-useless-call": "error",
+    "no-useless-escape": "error",
+    "no-useless-concat": "error",
+    "no-useless-rename": "error",
+    "no-useless-return": "error",
+    "prefer-spread": "error", // convention, brevity
+    "prefer-template": "error", // convention, readability
+    "yoda": "error",
+    "camelcase": "error",
+    "no-shadow-restricted-names": "error",
+    "@typescript-eslint/require-await": "error",
+    "max-lines": ["error", 1000],
+    "class-methods-use-this": "off",
+    "no-magic-numbers": "off",
+    "no-invalid-this": "error",
+    "no-eq-null": "error",
+    "no-empty": "error",
+    "default-case": "error",
+    "no-var": "error",
+    "valid-typeof": "error",
+    "max-depth": ["error", 4],
+    "max-params": ["error", 4],
+    "no-namespecaes": 0,
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "CallExpression[callee.object.name='test'][callee.property.name='only']",
+        "message": "test.only() is not allowed"
+      },
+      {
+        "selector": "CallExpression[callee.object.object.name='test'][callee.object.property.name='describe'][callee.property.name='only']",
+        "message": "test.describe.only() is not allowed"
+      }
+    ]
+  }
+}

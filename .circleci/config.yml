@@ -1,0 +1,121 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.1.0
+  slack: circleci/slack@4.13.1
+
+parameters:
+  ENV:
+    description: Run test in a specific environment. Available options are 'qa1', 'local', 'stage'.
+    type: string
+    default: ""
+  AUTH_TOKEN:
+    description: Auth token fetching bearer token.
+    type: string
+    default: ""
+  AUTH_EMAIL:
+    description: Auth email for fetching bearer token.
+    type: string
+    default: ""
+  AUTH_PASSWORD:
+    description: Auth password for fetching bearer token.
+    type: string
+    default: ""
+  application-project-name:
+    type: string
+    default: $CIRCLE_PROJECT_REPONAME
+  commit-message:
+    description: Commit message.
+    type: string
+    default: $(git log --format=%B -n 1 $CIRCLE_SHA1)
+  commit-author:
+    description: Commit author.
+    type: string
+    default: $(git show -s --format='%an' $CIRCLE_SHA1)
+
+commands:
+  install-dependencies:
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm ci
+
+  run-tests:
+    steps:
+      - run:
+          name: Run tests
+          command: npm test
+
+  setup-slack-reporter:
+    steps:
+      - run:
+          name: Set Up Slack Reporter
+          command: |
+            chmod +x .circleci/scripts/send_slack_notification.sh
+            chmod +x .circleci/scripts/parse_test_results.sh
+            apt-get update && apt-get install -y xmlstarlet jq
+          when: always
+      - run:
+          name: Parse JUnit Report
+          command: .circleci/scripts/parse_test_results.sh
+          when: always
+      - run:
+          name: Post Slack Report
+          command: env PROJECT_NAME="<< pipeline.parameters.application-project-name >>" ENV_NAME="<< pipeline.parameters.ENV >>" COMMIT_MESSAGE="<< pipeline.parameters.commit-message >>" COMMIT_AUTHOR="<< pipeline.parameters.commit-author >>" .circleci/scripts/send_slack_notification.sh
+          when: always
+
+jobs:
+  execute-api-tests:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.46.1-jammy
+    environment:
+      ENV: << pipeline.parameters.ENV >>
+      AUTH_TOKEN: << pipeline.parameters.AUTH_TOKEN >>
+      AUTH_EMAIL: << pipeline.parameters.AUTH_EMAIL >>
+      AUTH_PASSWORD: << pipeline.parameters.AUTH_PASSWORD >>
+    resource_class: small
+    parallelism: 1
+    steps:
+      - install-dependencies
+      - run-tests
+      - store_artifacts:
+          path: test-results/
+
+  execute-api-tests-with-slack:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.46.1-jammy
+    environment:
+      ENV: << pipeline.parameters.ENV >>
+      AUTH_TOKEN: << pipeline.parameters.AUTH_TOKEN >>
+      AUTH_EMAIL: << pipeline.parameters.AUTH_EMAIL >>
+      AUTH_PASSWORD: << pipeline.parameters.AUTH_PASSWORD >>
+    resource_class: small
+    parallelism: 1
+    steps:
+      - install-dependencies
+      - run-tests
+      - setup-slack-reporter
+      - store_artifacts:
+          path: test-results/
+
+workflows:
+  version: 2
+  Api-Tests-Run:
+    jobs:
+      - execute-api-tests:
+          name: Run API tests
+          filters:
+            branches:
+              only:
+                - /^feature\/.*$/
+                - hotfix/*
+                - hotfix
+
+  Api-Tests-Run-With-Slack:
+    jobs:
+      - execute-api-tests-with-slack:
+          name: Run API tests with Slack notifications
+          filters:
+            branches:
+              only:
+                - main

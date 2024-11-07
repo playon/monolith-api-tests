@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "ES2018",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "types": ["node", "@playwright/test"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,4 @@
+node_modules/
+coding-standard.md
+playwright.config.ts
+*.js
