@@ -1,4 +1,6 @@
-const authUri = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword`;
-const healthCheck = '/';
+const v2 = '/v2';
+const events = '/events/';
 
-export { healthCheck, authUri };
+export enum URI {
+  EVENTS = `${v2}${events}`,
+}

@@ -1,4 +1,4 @@
-export const ENVS = ['QA1', 'local', 'staging'] as const;
+export const ENVS = ['qa', 'stage', 'dev'] as const;
 export type TEnvironment = (typeof ENVS)[number];
 
 export function isEnv(env: unknown): env is TEnvironment {

@@ -1,4 +1,4 @@
-import process from 'process';
+import * as process from 'process';
 import { ENVS, isEnv, TEnvironment } from '../types/config.type';
 
 export const getEnv = (): TEnvironment => {
