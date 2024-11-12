@@ -15,3 +15,30 @@ export function isDateWithinLastHour(dateStr: string): boolean {
 
   return now.getTime() - date.getTime() <= oneHour;
 }
+
+/**
+ * Adds a specified number of days to the current date and returns the resulting date in ISO 8601 format.
+ * @param days Number of days to add.
+ * @returns A string representing the new date in ISO 8601 format.
+ */
+export function addDaysToDate(days: number): string {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + days);
+  return currentDate.toISOString();
+}
+
+/**
+ * Returns the current date in ISO 8601 format.
+ * @returns A string representing the current date in ISO 8601 format.
+ */
+export function getCurrentDate(): string {
+  return new Date().toISOString();
+}
+
+/* Example usage
+  const newDate = addDaysToDate(10);
+  console.log(`Current date plus 10 days: ${newDate}`);
+  
+  const currentDate = getCurrentDate();
+  console.log(`Current date: ${currentDate}`);
+  */
