@@ -68,7 +68,7 @@ interface product {
     formFields: string[]
 }
 
-enum gender {
+export enum gender {
     boys = 'Boys',
     girls = 'Girls',
     other = 'Other'
@@ -79,7 +79,7 @@ interface level {
     genders: gender[];
 }
 
-class monolith {
+export class monolith {
     static createEvent(gender: gender, activityId: Number, accountId: string): monolithEvent {
         return{
             genders: [],
