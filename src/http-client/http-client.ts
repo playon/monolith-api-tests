@@ -9,7 +9,6 @@ export class HttpClient extends BaseHTTPClient {
   }
 
   createEventHQ(){
-    //hq event body
   return this.POST(URI.EVENTS, monolith.createEvent(gender.boys, 6, 'WI18284'),);
   }
 

@@ -74,7 +74,7 @@ export enum gender {
     other = 'Other'
 }
 
-interface level {
+export interface level {
     levelId: Number;
     genders: gender[];
 }
