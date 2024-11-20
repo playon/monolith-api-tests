@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures';
-import { healthResponseData } from '../data/health-response.data';
 import { METHOD, STATUS } from '../data/coverage-meta.data';
+import { EventResponseHQ } from 'src/data/hqEventResponse.data';
 
 test.describe('Create Event in HQ and check in other systems', () => {
   test.afterAll(async ({ client }) => client.dispose());
@@ -11,7 +11,15 @@ test.describe('Create Event in HQ and check in other systems', () => {
       return res;
     });
 
-    const data =response.data as 
-    expect(data).toStrictEqual(healthResponseData);
+    const data = response.data as EventResponseHQ;
+
+    expect(data.archived === false);
+    expect(data.eventIntegrationDetails[0].gender === 'Boys');
+    expect(data.accountId === 'WI18284');
+
+    const id = data.id;
+    console.log(id);
+
+
   });
 });

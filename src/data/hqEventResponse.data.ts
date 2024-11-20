@@ -1,6 +1,6 @@
 import { gender, level } from "src/api/monolith.data";
 
-export interface EventResponseHQ<T extends gender> {
+export interface EventResponseHQ {
     _links: {
         resource_logs: {
             href: string
@@ -49,7 +49,7 @@ export interface EventResponseHQ<T extends gender> {
    emailMessageId: null;
    enableEventValidation: boolean;
    endDateTime: string;
-   eventIntegrationDetails: eventIntegrationDetail<T>[];
+   eventIntegrationDetails: eventIntegrationDetail<gender.boys>[];
    eventNotes: null;
    eventTypeId: Number;
    eventValidationStartsBefore: Number;
