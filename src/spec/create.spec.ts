@@ -20,6 +20,14 @@ test.describe('Create Event in HQ and check in other systems', () => {
     const id = data.id;
     console.log(id);
 
+    const ehResponse = await client
+    .getEventEH('gofan-event-id', id)
+    .then(res => {
+      expect(res.status()).toBe(200);
+      return res;
+    });
+
+    const ehData = ehResponse.ehData as EventData;
 
   });
 });

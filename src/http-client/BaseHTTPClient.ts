@@ -29,7 +29,7 @@ export class BaseHTTPClient {
     return new this(context);
   }
 
-  async GET<T>(url: string): Promise<TApiResponse<T>> {
+  async GET<T>(url: string, data: unknown): Promise<TApiResponse<T>> {
     const response = await this.context.get(url, { headers: this.headers });
     this.eventEmitter.emit('response', {
       url: response.url(),
