@@ -9,8 +9,9 @@ export const authRequestData = {
 };
 
 function getAuthEmail(): string {
-  const authEmail = 'marina.kulenkova.cw@playonsports.com';
-  //process.env.AUTH_EMAIL;
+  const authEmail = process.env.AUTH_EMAIL;
+  //'marina.kulenkova.cw@playonsports.com';
+
   if (isString(authEmail)) {
     return authEmail;
   }
@@ -18,8 +19,8 @@ function getAuthEmail(): string {
 }
 
 function getAuthPwd(): string {
-  const authPwd = '730Dbd20';
-  //process.env.AUTH_PASSWORD;
+  const authPwd = process.env.AUTH_PASSWORD;
+  //'730Dbd20'
   if (isString(authPwd)) {
     return authPwd;
   }

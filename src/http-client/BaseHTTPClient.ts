@@ -1,7 +1,6 @@
 import { APIRequestContext, APIResponse, request } from '@playwright/test';
 import { httpClientConfig } from '../configuration';
 import { authUri } from './uri';
-import { getAuthToken } from '../configuration/utils';
 import { authRequestData } from '../data/auth-request.data';
 import { TApiResponse, TRequestOptions } from '../types/http-client.type';
 import { TAuthResponse } from '../types/auth-response.type';
