@@ -14,7 +14,6 @@ export class HttpClient extends BaseHTTPClient {
   }
 
   getEventEH(sm_name: string, sm_id: string){
-
     return this.GET(URI_EH.EVENTS, SystemMapping.getSystemMapping(sm_name, sm_id))
   }
 

@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures';
-import { METHOD, STATUS } from '../data/coverage-meta.data';
+import { EventData } from '../data/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hqEventResponse.data';
+import exp from 'constants';
 
 test.describe('Create Event in HQ and check in other systems', () => {
   test.afterAll(async ({ client }) => client.dispose());
@@ -21,13 +22,16 @@ test.describe('Create Event in HQ and check in other systems', () => {
     console.log(id);
 
     const ehResponse = await client
-    .getEventEH('gofan-event-id', id)
+    .getEventEH('gofan-event-id', id.toString())
     .then(res => {
       expect(res.status()).toBe(200);
       return res;
     });
 
-    const ehData = ehResponse.ehData as EventData;
-
+    const ehData = ehResponse.data as EventData;
+    expect(ehData.source_system === 'HQ');
+    expect(ehData.originating_system === 'HQ');
+    expect(ehData.system_mapping[0].name === 'gofan-event-id');
+    expect(ehData.system_mapping[0].id === id.toString());
   });
 });

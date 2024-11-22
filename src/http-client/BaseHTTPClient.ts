@@ -1,6 +1,5 @@
 import { APIRequestContext, APIResponse, request } from '@playwright/test';
 import { httpClientConfig } from '../configuration';
-import { authUri } from './uri';
 import { authRequestData } from '../data/auth-request.data';
 import { TApiResponse, TRequestOptions } from '../types/http-client.type';
 import { TAuthResponse } from '../types/auth-response.type';
@@ -78,24 +77,6 @@ export class BaseHTTPClient {
       status: response.status(),
     });
     return this.coerceBodyType<T>(response);
-  }
-
-  async authorize(): Promise<void> {
-    const resp = await this.POST<TAuthResponse>(
-      authUri,
-      authRequestData,
-      {
-        params: { key: getAuthToken() },
-        failOnStatusCode: true,
-      },
-      false,
-    );
-    this.setHeaders(resp.data.idToken);
-  }
-
-  private setHeaders(token: string): void {
-    this.headers['Content-Type'] = 'application/json';
-    this.headers['Authorization'] = `Bearer ${token}`;
   }
 
   dispose(): Promise<void> {
