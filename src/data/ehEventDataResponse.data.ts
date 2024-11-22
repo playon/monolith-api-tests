@@ -127,6 +127,14 @@ interface system_mapping {
   id: string;
 }
 
+export class SystemMapping {
+  static getSystemMapping(sm_name: string, sm_id: string): system_mapping {
+    return {
+      name: sm_name,
+      id: sm_id,
+    };
+  }
+}
 
 export interface EventData {
   event_hub_id: string;
