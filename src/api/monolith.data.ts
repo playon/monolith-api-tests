@@ -96,7 +96,7 @@ export class monolith {
                     genders: [gender]
                     },
             ],
-            startDateTime: addDaysToDate(10),
+            startDateTime: addDaysToDate(5),
             startTimeType: 'DIFFERENCE_TIME',
             startTimeOptions: {},
             endDateTime: addDaysToDate(15),
@@ -115,7 +115,7 @@ export class monolith {
             enableEventValidation: true,
             redemptionWindow: null,
             archived: false,
-            publishDateTime: addDaysToDate(10),
+            publishDateTime: null,
             featuredAccountIds: [],
             ticketLimitPerOrder: 30,
             glCode: null,

@@ -4,17 +4,19 @@ import { authRequestData } from '../data/auth-request.data';
 import { TApiResponse, TRequestOptions } from '../types/http-client.type';
 import { TAuthResponse } from '../types/auth-response.type';
 import { EventEmitter } from 'events';
+import * as fs from 'fs';
 
 export class BaseHTTPClient {
   private context: APIRequestContext;
   private readonly headers: Record<string, string>;
-  private eventEmitter = new EventEmitter();
+  private eventEmitter: EventEmitter;
 
-  protected constructor(context: APIRequestContext) {
+  protected constructor(context: APIRequestContext, headers: Record<string, string>, eventEmitter: EventEmitter) {
     this.context = context;
-    this.headers = {};
+    this.headers = headers;
+    this.eventEmitter = eventEmitter;
   }
-
+  
   static async create<T extends BaseHTTPClient>(
     this: new (context: APIRequestContext) => T,
   ): Promise<T> {
@@ -42,7 +44,15 @@ export class BaseHTTPClient {
     data: unknown,
     options?: TRequestOptions,
     isEmitted = true,
+    httpCredentials?: { username: string; password: string }
   ): Promise<TApiResponse<T>> {
+
+    const filename = `./request-data.json`;
+    fs.writeFileSync(filename, JSON.stringify(data, null, 2), 'utf8');
+
+    console.log('URL:', url);
+    console.log('username: ' + httpCredentials.username);
+    console.log('password: ' + httpCredentials.password);
     const response = await this.context
       .post(url, { data, params: options?.params, headers: this.headers })
       .then(this.coerceBodyType<T>);
