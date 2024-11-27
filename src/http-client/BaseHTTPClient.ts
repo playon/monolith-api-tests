@@ -53,6 +53,20 @@ export class BaseHTTPClient {
     console.log('URL:', url);
     console.log('username: ' + httpCredentials.username);
     console.log('password: ' + httpCredentials.password);
+  
+
+    const headers: Record<string, string> = {
+      ...this.headers,  
+      'Accept': 'application/json', 
+      'Content-Type': 'application/json',
+    };
+
+    if (httpCredentials) {
+      const authHeader = 'Basic ' + Buffer.from(`${httpCredentials.username}:${httpCredentials.password}`).toString('base64');
+      headers['Authorization'] = authHeader; 
+      console.log(JSON.stringify(headers, null, 2)); 
+    }
+  
     const response = await this.context
       .post(url, { data, params: options?.params, headers: this.headers })
       .then(this.coerceBodyType<T>);

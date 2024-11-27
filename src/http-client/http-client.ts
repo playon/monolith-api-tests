@@ -22,7 +22,7 @@ export class HttpClient extends BaseHTTPClient {
       throw new Error('System1 configuration not found!');
     }
     const eventData = monolith.createEvent(gender.boys, 6, 'WI18284');
-    return this.POST(process.env.URL_HQ + URI_HQ.EVENTS, eventData, { params: {} }, true, hqConfig.httpCredentials);
+    return this.POST(process.env.URL_HQ + URI_HQ.EVENTS, eventData, { params: {'Content-Type': 'application/json'} }, true, hqConfig.httpCredentials);
   }
 
   getEventEH(sm_name: string, sm_id: string){
