@@ -1,4 +1,4 @@
-export interface EventResponseVNN {
+export interface EventResponseNFHS {
     start: Number,
     size: Number,
     cursor: "",

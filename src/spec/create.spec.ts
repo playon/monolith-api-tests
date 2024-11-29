@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures';
 import { EventData } from '../data/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hqEventResponse.data';
+import { EventResponseNFHS } from 'src/data/nfhsEventResponse.data'
 import exp from 'constants';
 
 test.describe('Create Event in HQ and check in other systems', () => {
@@ -33,5 +34,14 @@ test.describe('Create Event in HQ and check in other systems', () => {
     expect(ehData.originating_system === 'HQ');
     expect(ehData.system_mapping[0].name === 'gofan-event-id');
     expect(ehData.system_mapping[0].id === id.toString());
+
+    const nfhsResponse = await client.getEventNFHS(id.toString()).then(res => {
+      expect(res.status()).toBe(200);
+      return res;
+    });
+    const nfhsData = nfhsResponse.data as EventResponseNFHS;
+    expect(nfhsData.items[0].creator === 'gofan');
+    expect(nfhsData.items[0].gender === 'Boys');
+    expect(nfhsData.items[0].tickets[0].gofan_event_id === id.toString());
   });
 });
