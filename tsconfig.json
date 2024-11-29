@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "target": "ES2018",
+    "target": "ES2022",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,

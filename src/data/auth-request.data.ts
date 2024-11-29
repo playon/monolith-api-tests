@@ -10,6 +10,8 @@ export const authRequestData = {
 
 function getAuthEmail(): string {
   const authEmail = process.env.AUTH_EMAIL;
+  //'marina.kulenkova.cw@playonsports.com';
+
   if (isString(authEmail)) {
     return authEmail;
   }
@@ -18,6 +20,7 @@ function getAuthEmail(): string {
 
 function getAuthPwd(): string {
   const authPwd = process.env.AUTH_PASSWORD;
+  //'730Dbd20'
   if (isString(authPwd)) {
     return authPwd;
   }

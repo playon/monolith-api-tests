@@ -1,13 +1,8 @@
 import { TSwaggerEndpoint } from '../../types/coverage-report.type';
 import { isString } from '../../types/globals.type';
 
-const SERVICE_NAME = '';
 
-if (!isString(SERVICE_NAME)) {
-  throw new Error('SERVICE_NAME is not defined');
-}
-
-const swaggerURL = `https://k8s-dashbirds-${SERVICE_NAME}-staging.playonsharedstage.playonsports.com/v1/docs/swagger.json`;
+const swaggerURL = `https://api.stage.gofan.co/swagger-ui.html`;
 
 export function fetchSwagger(): Promise<TSwaggerEndpoint[]> {
   return fetch(swaggerURL, {

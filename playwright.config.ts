@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import ApiCoverageReporter from './src/reporter/reporter';
 
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.ENV}` });
 
 const config = defineConfig({
   testDir: './src/spec',

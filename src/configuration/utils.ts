@@ -1,4 +1,4 @@
-import process from 'process';
+import * as process from 'process';
 import { ENVS, isEnv, TEnvironment } from '../types/config.type';
 
 export const getEnv = (): TEnvironment => {
@@ -10,11 +10,11 @@ export const getEnv = (): TEnvironment => {
   }
   return env as TEnvironment;
 };
-
+/*
 export const getAuthToken = (): string => {
   const token = process.env.AUTH_TOKEN;
   if (!token) {
     throw new Error('No auth token found');
   }
   return token;
-};
+};*/
