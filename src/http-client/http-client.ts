@@ -5,7 +5,7 @@ import { URI_HQ, URI_EH, URI_NFHS } from './uri';
 import { EventEmitter } from 'stream';
 import { httpMapConfig } from './../configuration/map.config'
 import { monolith, gender } from './../api/monolith.data';
-import { SystemMapping } from './../data/ehEventDataResponse.data';
+import { SystemMapping } from '../data/eh/ehEventDataResponse.data';
 
 const env = process.env.ENV as TEnvironment;
 export class HttpClient extends BaseHTTPClient {

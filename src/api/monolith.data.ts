@@ -79,6 +79,10 @@ export interface level {
     genders: gender[];
 }
 
+interface updateEvent {
+    
+}
+
 export class monolith {
     static createEvent(gender: gender, activityId: Number, accountId: string): monolithEvent {
         return{
@@ -170,44 +174,23 @@ export class monolith {
             disabledForIndividualSale: false
         };
     }
+
+    static updateEvent(gender: gender, activityId: Number, accountId: string): monolithEvent {
+        return{
+            genders: [],
+            allDayEvent: false,
+            test: string,
+
+        }
+    }
+    /*
+    static updateEvent(id: Number, name: string, rsEventStartDate: string, rsEventEndDate: string){
+        return {
+            description: string,
+            facebookUrl: string,
+
+
+        }
+    }*/
 }
-/*
- genders: string[];
-    allDayEvent: boolean;
-    financialAccountId: string;
-    taggedAccountIds: string[];
-    levels: level[];
-    startDateTime: string;
-    startTimeType: string;
-    startTimeOptions: {};
-    endDateTime: string;
-    accountId: string;
-    activityId: Number;
-    reportingLabel: string;
-    name: string;
-    venueCity: string;
-    venueAddress: string;
-    venueLocation: string;
-    venueName: string;
-    venueId: Number;
-    venueState: string;
-    venueZip: string;
-    eventValidationStartsBefore: Number;
-    enableEventValidation: boolean;
-    redemptionWindow: null;
-    archived: boolean;
-    publishDateTime: string;
-    featuredAccountIds: string[];
-    ticketLimitPerOrder: Number;
-    glCode: null;
-    products: product[];
-    accountsTicket: string[];
-    ticketDistribution: boolean;
-    eventIntegrationDetails: eventIntegrationDetails[];
-    featured: boolean;
-    disableQr: boolean;
-    postSeason: boolean;
-    timeZone: string;
-    specialEventDescription: string;
-    disabledForIndividualSale: boolean;
-*/
+
