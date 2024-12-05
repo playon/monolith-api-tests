@@ -18,11 +18,11 @@ test.describe('Create Event in HQ and check in other systems', () => {
 
    const eventData = data as EventResponseHQ; 
 
-    expect(data.archived === false);
-    expect(data.eventIntegrationDetails[0].gender === 'Boys');
-    expect(data.accountId === 'WI18284');
+    expect(eventData.archived === false);
+    expect(eventData.eventIntegrationDetails[0].gender === 'Boys');
+    expect(eventData.accountId === 'WI18284');
 
-    const id = data.id;
+    const id = eventData.id;
     console.log(id);
 
     const ehResponse = await client
