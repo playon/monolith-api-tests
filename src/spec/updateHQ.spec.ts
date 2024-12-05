@@ -44,5 +44,4 @@ test.describe('Create Event in HQ, Update in HQ and check in other systems', () 
     expect(nfhsData.items[0].gender === 'Boys');
     expect(nfhsData.items[0].tickets[0].gofan_event_id === id.toString());
   });
-
 });
