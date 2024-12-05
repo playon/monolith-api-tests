@@ -80,7 +80,7 @@ export interface level {
 }
 
 interface updateEvent {
-    
+
 }
 
 export class monolith {
@@ -175,14 +175,6 @@ export class monolith {
         };
     }
 
-    static updateEvent(gender: gender, activityId: Number, accountId: string): monolithEvent {
-        return{
-            genders: [],
-            allDayEvent: false,
-            test: string,
-
-        }
-    }
     /*
     static updateEvent(id: Number, name: string, rsEventStartDate: string, rsEventEndDate: string){
         return {

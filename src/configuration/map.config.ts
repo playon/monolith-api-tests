@@ -11,7 +11,7 @@ export const httpMapConfig: THttpMapConfig = new Map([
   ['stage',
   {
     hq: { 
-      baseUrl: process.env.URL_HQ || '', 
+      baseUrl: process.env.URL_HQ, 
       httpCredentials: {
       username: process.env.AUTH_EMAIL,
       password: process.env.AUTH_PASSWORD,

@@ -90,10 +90,6 @@ export type TRequestOptions = {
 
     password: string;
 
-    /**
-     * Restrain sending http credentials on specific origin (scheme://host:port).
-     */
-    origin?: string;
 
     /**
      * This option only applies to the requests sent from corresponding {@link APIRequestContext} and does not affect
@@ -101,7 +97,6 @@ export type TRequestOptions = {
      * sent with the each API request. `'unauthorized` - the credentials are only sent when 401 (Unauthorized) response
      * with `WWW-Authenticate` header is received. Defaults to `'unauthorized'`.
      */
-    send?: 'unauthorized' | 'always';
   };
 
   /**

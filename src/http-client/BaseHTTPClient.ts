@@ -8,13 +8,17 @@ import * as fs from 'fs';
 
 export class BaseHTTPClient {
   private context: APIRequestContext;
-  private readonly headers: Record<string, string> = {'Content-Type': 'application/json'};
+  private headers: Record<string, string>;
   private eventEmitter: EventEmitter;
 
   protected constructor(context: APIRequestContext, headers: Record<string, string>, eventEmitter: EventEmitter) {
     this.context = context;
     this.headers = headers;
     this.eventEmitter = eventEmitter;
+  }
+
+  public getContext(): APIRequestContext {
+    return this.context;
   }
   
   static async create<T extends BaseHTTPClient>(
@@ -29,6 +33,7 @@ export class BaseHTTPClient {
     return new this(context);
   }
 
+
   async GET<T>(url: string): Promise<TApiResponse<T>> {
     const response = await this.context.get(url, { headers: this.headers });
     this.eventEmitter.emit('response', {
@@ -40,44 +45,26 @@ export class BaseHTTPClient {
   }
 
   async POST<T>(
-    url: string,
-    data: unknown,
-    options?: TRequestOptions,
-    isEmitted = true,
-    httpCredentials?: { username: string; password: string }
+    url: string, 
+    body: unknown, 
+    customHeaders?: Record<string, string>  
   ): Promise<TApiResponse<T>> {
 
     const filename = `./request-data.json`;
-    fs.writeFileSync(filename, JSON.stringify(data, null, 2), 'utf8');
-
-    console.log('URL:', url);
-    console.log('username: ' + httpCredentials.username);
-    console.log('password: ' + httpCredentials.password);
+    fs.writeFileSync(filename, JSON.stringify(body, null, 2), 'utf8');
+    const response = await this.context.post(url, {
+      headers: customHeaders,  
+      data: body,  
+    });
+    
+ 
+    this.eventEmitter.emit('response', {
+      url: response.url(),
+      status: response.status(),
+      method: 'POST',
+    });
   
-
-    const headers: Record<string, string> = {
-      ...this.headers,  
-      'Accept': 'application/json', 
-      'Content-Type': 'application/json',
-    };
-
-    if (httpCredentials) {
-      const authHeader = 'Basic ' + Buffer.from(`${httpCredentials.username}:${httpCredentials.password}`).toString('base64');
-      headers['Authorization'] = authHeader; 
-      console.log(JSON.stringify(headers, null, 2)); 
-    }
-  
-    const response = await this.context
-      .post(url, { data, params: options?.params, headers: this.headers })
-      .then(this.coerceBodyType<T>);
-    if (isEmitted) {
-      this.eventEmitter.emit('response', {
-        method: 'POST',
-        url: response.url(),
-        status: response.status(),
-      });
-    }
-    return response;
+    return this.coerceBodyType<T>(response);
   }
 
   async DELETE<T>(url: string): Promise<TApiResponse<T>> {

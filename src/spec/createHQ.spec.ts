@@ -1,19 +1,22 @@
 import { test, expect } from '../fixtures';
 import { EventData } from '../data/eh/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hq/hqEventResponse.data';
-import { EventResponseNFHS } from 'src/data/nfhs/nfhsEventResponse.data'
-import exp from 'constants';
+import { EventResponseNFHS } from 'src/data/nfhs/nfhsEventResponse.data';
+import { STATUS } from '../data/coverage-meta.data';
+import { EventService } from '../services/EventService';
 
 test.describe('Create Event in HQ and check in other systems', () => {
   test.afterAll(async ({ client }) => client.dispose());
   test('should create an event in HQ and verify its presence in other systems', async ({ client, metadata }) => {
-
-    const response = await client.createEventHQ().then(res => {
-      expect(res.status()).toBe(200);
-      return res;
+    const response = await EventService.createEventHQ().then(res => {
+      expect(res.status()).toBe(STATUS.CREATED);
+      console.log('Response Status:', res.status());
+      return res;    
     });
 
-    const data = response.data as EventResponseHQ;
+    const data = await response.json();
+
+   const eventData = data as EventResponseHQ; 
 
     expect(data.archived === false);
     expect(data.eventIntegrationDetails[0].gender === 'Boys');
@@ -25,7 +28,7 @@ test.describe('Create Event in HQ and check in other systems', () => {
     const ehResponse = await client
     .getEventEH('gofan-event-id', id.toString())
     .then(res => {
-      expect(res.status()).toBe(200);
+      expect(res.status()).toBe(201);
       return res;
     });
 
@@ -44,4 +47,4 @@ test.describe('Create Event in HQ and check in other systems', () => {
     expect(nfhsData.items[0].gender === 'Boys');
     expect(nfhsData.items[0].tickets[0].gofan_event_id === id.toString());
   });
-});
+  });
