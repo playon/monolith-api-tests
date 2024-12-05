@@ -2,14 +2,14 @@ import { test, expect } from '../fixtures';
 import { EventData } from '../data/eh/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hq/hqEventResponse.data';
 import { EventResponseNFHS } from 'src/data/nfhs/nfhsEventResponse.data'
-
+import { STATUS } from '../data/coverage-meta.data';
 
 test.describe('Create Event in HQ, Update in HQ and check in other systems', () => {
  test.afterAll(async ({ client }) => client.dispose());
   test('should create an event in HQ, update it in HQ and verify its current state in other systems', async ({ client, metadata }) => {
 
     const response = await client.createEventHQ().then(res => {
-      expect(res.status()).toBe(200);
+      expect(res.status()).toBe(STATUS.CREATED);
       return res;
     });
 
