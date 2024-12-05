@@ -1,8 +1,8 @@
-//import { test, expect } from '../fixtures';
+import { test, expect } from '../fixtures';
 import { EventData } from '../data/eh/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hq/hqEventResponse.data';
 import { EventResponseNFHS } from 'src/data/nfhs/nfhsEventResponse.data'
-/* 
+
 
 test.describe('Create Event in HQ, Update in HQ and check in other systems', () => {
  test.afterAll(async ({ client }) => client.dispose());
@@ -46,4 +46,3 @@ test.describe('Create Event in HQ, Update in HQ and check in other systems', () 
   });
 
 });
-*/
