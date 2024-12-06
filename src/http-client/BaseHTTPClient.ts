@@ -34,15 +34,29 @@ export class BaseHTTPClient {
   }
 
 
-  async GET<T>(url: string): Promise<TApiResponse<T>> {
-    const response = await this.context.get(url, { headers: this.headers });
+  async GET<T>(url: string, body?: any, headers?: Record<string, string>): Promise<TApiResponse<T>> {
+    const options: TRequestOptions = {
+      extraHTTPHeaders: headers || this.headers, 
+      failOnStatusCode: false, 
+    };
+  
+    if (body) {
+           const serializedBody = JSON.stringify(body);
+      
+      options.params = { body: encodeURIComponent(serializedBody) };
+    }
+  
+    const response = await this.context.get(url, options);
+  
     this.eventEmitter.emit('response', {
       url: response.url(),
       status: response.status(),
       method: 'GET',
     });
+  
     return this.coerceBodyType<T>(response);
   }
+  
 
   async POST<T>(
     url: string, 
@@ -57,7 +71,7 @@ export class BaseHTTPClient {
       data: body,  
     });
     
- 
+
     this.eventEmitter.emit('response', {
       url: response.url(),
       status: response.status(),
