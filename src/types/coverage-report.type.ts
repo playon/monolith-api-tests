@@ -5,7 +5,7 @@ export type THttpMethod = (typeof httpMethods)[number];
 
 export type TMetadata = {
   uri: string;
-  status: number;
+  statusCode: number;
   method: THttpMethod;
   testName: string;
   testStatus: string;

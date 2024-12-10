@@ -28,12 +28,12 @@ export class HttpClient extends BaseHTTPClient {
     };
   }
   
-  createEventHQ(){
+  createEventHQ(gender: gender){
     const hqConfig = httpMapConfig.get('stage')?.hq;
     if (!hqConfig) {
       throw new Error('HQ configuration not found!');
     }
-    const eventData = monolith.createEvent(gender.boys, 6, 'WI18284');
+    const eventData = monolith.event(gender, 6, 'WI18284');
     const url = process.env.URL_HQ + URI_HQ.EVENTS;
     const encodedCredentials = Buffer.from(`${hqConfig.httpCredentials.username}:${hqConfig.httpCredentials.password}`).toString('base64');
     const myHeaders = {
@@ -42,9 +42,23 @@ export class HttpClient extends BaseHTTPClient {
 };
 const mergedHeaders = this.mergeHeaders(myHeaders);
 console.log(JSON.stringify(mergedHeaders));
-return this.POST(url, eventData, mergedHeaders);
-    
+return this.POST(url, eventData, mergedHeaders); }
+
+updateEventHQ(id: string, gender: gender){
+  const hqConfig = httpMapConfig.get('stage')?.hq;
+  if (!hqConfig) {
+    throw new Error('HQ configuration not found!');
   }
+  const eventData = monolith.event(gender, 6, 'WI18284');
+  const url = process.env.URL_HQ + URI_HQ.EVENTS + id;
+  const encodedCredentials = Buffer.from(`${hqConfig.httpCredentials.username}:${hqConfig.httpCredentials.password}`).toString('base64');
+  const myHeaders = {
+'Authorization': `Basic ${encodedCredentials}`,
+'Content-Type': 'application/json',
+};
+const mergedHeaders = this.mergeHeaders(myHeaders);
+console.log(JSON.stringify(mergedHeaders));
+return this.PUT(url, eventData, mergedHeaders); }
 
   checkEventEH(sm_name: string, sm_id: string){
 

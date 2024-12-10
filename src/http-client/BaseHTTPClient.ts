@@ -18,6 +18,10 @@ export class BaseHTTPClient {
     this.eventEmitter = eventEmitter;
   }
 
+  public getEventEmitter(): EventEmitter {
+    return this.eventEmitter;
+  }
+
   public getContext(): APIRequestContext {
     return this.context;
   }
@@ -95,11 +99,12 @@ export class BaseHTTPClient {
     return this.coerceBodyType<T>(response);
   }
 
-  async PUT<T>(url: string, data: any): Promise<TApiResponse<T>> {
+  async PUT<T>(url: string, data: any, customHeaders?: Record<string, string> ): Promise<TApiResponse<T>> {
     const response = await this.context.put(url, {
       data,
-      headers: this.headers,
+      headers: customHeaders,
     });
+
     this.eventEmitter.emit('response', {
       method: 'PUT',
       url: response.url(),

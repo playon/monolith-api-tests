@@ -1,5 +1,5 @@
 import { addDaysToDate } from "src/utils/date.utils";
-
+const neededDate = addDaysToDate(14);
 interface monolithEvent {
     genders: string[];
     allDayEvent: boolean;
@@ -84,7 +84,7 @@ interface updateEvent {
 }
 
 export class monolith {
-    static createEvent(gender: gender, activityId: Number, accountId: string): monolithEvent {
+    static event(gender: gender, activityId: Number, accountId: string): monolithEvent {
         return{
             genders: [],
             allDayEvent: false,
@@ -100,10 +100,10 @@ export class monolith {
                     genders: [gender]
                     },
             ],
-            startDateTime: addDaysToDate(5),
+            startDateTime: neededDate,
             startTimeType: 'DIFFERENCE_TIME',
             startTimeOptions: {},
-            endDateTime: addDaysToDate(5),
+            endDateTime: neededDate,
             accountId: accountId,
             activityId: activityId,
             reportingLabel: 'Archery',
@@ -119,7 +119,7 @@ export class monolith {
             enableEventValidation: true,
             redemptionWindow: null,
             archived: false,
-            publishDateTime: addDaysToDate(5),
+            publishDateTime: neededDate,
             featuredAccountIds: [],
             ticketLimitPerOrder: 30,
             glCode: null,
@@ -151,7 +151,7 @@ export class monolith {
                     vodUnlisted: true,
                     level: 'Varsity',
                     gender: gender,
-                    levelByGender: 'Boys-Varsity'
+                    levelByGender: gender+'-Varsity'
                 },
                 {
                     broadcastStartTime: '02:00 PM',
@@ -161,16 +161,16 @@ export class monolith {
                     pixellotKey: 'pxl0725e3659e',
                     unListed: false,
                     vodUnlisted: true,
-                    level: 'Junior Varsity',
+                    level: 'Varsity',
                     gender: gender,
-                    levelByGender: 'Boys-Junior Varsity'
+                    levelByGender: gender+'-Varsity'
                 }
             ],
             featured: false,
             disableQr: true,
             postSeason: false,
             timeZone: 'America/Chicago',
-            specialEventDescription: 'Boys Varsity/Junior Varsity',
+            specialEventDescription: 'Boys Varsity',
             disabledForIndividualSale: false
         };
     }

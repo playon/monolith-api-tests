@@ -3,24 +3,27 @@ import { EventData } from '../data/eh/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hq/hqEventResponse.data';
 import { EventResponseNFHS } from 'src/data/nfhs/nfhsEventResponse.data';
 import { STATUS } from '../data/coverage-meta.data';
-import exp from 'constants';
+import { gender } from 'src/api/monolith.data';
+
+
 
 test.describe('Create Event in HQ and check in other systems', () => {
   test.afterAll(async ({ client }) => client.dispose());
   test('should create an event in HQ and verify its presence in other systems', async ({ client, metadata }) => {
 
-       const response = await client.createEventHQ().then(res => {
+       const response = await client.createEventHQ(gender.boys).then(res => {
        expect(res.status()).toBe(STATUS.CREATED);
        return res;
      });
  
-     const data = response.data as EventResponseHQ;
+     const data = response.data as EventResponseHQ<gender.boys>;
  
     expect(data.archived === false);
     expect(data.eventIntegrationDetails[0].gender === 'Boys');
     expect(data.accountId === 'WI18284');
 
     const id = data.id;
+
     console.log(id);
 
     const ehResponse = await client
@@ -30,11 +33,13 @@ test.describe('Create Event in HQ and check in other systems', () => {
       return res;
     });
 
-    const ehData = ehResponse.data as EventData;
-    expect(ehData.source_system === 'HQ');
-    expect(ehData.originating_system === 'HQ');
-    expect(ehData.system_mapping[0].name === 'gofan-event-id');
-    expect(ehData.system_mapping[0].id === id.toString());
+    const ehData = ehResponse.data as EventData[];
+    expect(ehData[0].source_system === 'HQ');
+    expect(ehData[0].originating_system === 'HQ');
+    expect(ehData[0].system_mapping[0].name === 'gofan-event-id');
+    expect(ehData[0].system_mapping[0].id === id.toString());
+
+    await new Promise(resolve => setTimeout(resolve, 10000));
 
     const nfhsResponse = await client.getEventNFHS(id.toString()).then(res => {
       expect(res.status()).toBe(200);
