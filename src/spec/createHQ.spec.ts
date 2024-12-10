@@ -3,6 +3,7 @@ import { EventData } from '../data/eh/ehEventDataResponse.data';
 import { EventResponseHQ } from 'src/data/hq/hqEventResponse.data';
 import { EventResponseNFHS } from 'src/data/nfhs/nfhsEventResponse.data';
 import { STATUS } from '../data/coverage-meta.data';
+import exp from 'constants';
 
 test.describe('Create Event in HQ and check in other systems', () => {
   test.afterAll(async ({ client }) => client.dispose());
@@ -23,9 +24,9 @@ test.describe('Create Event in HQ and check in other systems', () => {
     console.log(id);
 
     const ehResponse = await client
-    .getEventEH('gofan-event-id', id.toString())
+    .checkEventEH('gofan-event-id', id.toString())
     .then(res => {
-      expect(res.status()).toBe(201);
+      expect(res.status()).toBe(STATUS.OK);
       return res;
     });
 
@@ -40,6 +41,7 @@ test.describe('Create Event in HQ and check in other systems', () => {
       return res;
     });
     const nfhsData = nfhsResponse.data as EventResponseNFHS;
+
     expect(nfhsData.items[0].creator === 'gofan');
     expect(nfhsData.items[0].gender === 'Boys');
     expect(nfhsData.items[0].tickets[0].gofan_event_id === id.toString());

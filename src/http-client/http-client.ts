@@ -46,7 +46,7 @@ return this.POST(url, eventData, mergedHeaders);
     
   }
 
-  getEventEH(sm_name: string, sm_id: string){
+  checkEventEH(sm_name: string, sm_id: string){
 
     const ehConfig = httpMapConfig.get('stage')?.eh;
     if (!ehConfig) {
@@ -60,10 +60,11 @@ return this.POST(url, eventData, mergedHeaders);
     }]
   };
 
-    const url = process.env.URL_EH + URI_EH.EVENTS;
+    const url = process.env.URL_EH + URI_EH.EVENTS_FILTER;
     console.log('URL: ' + url);
     console.log('Body: ' + JSON.stringify(eventBody));
-    return this.GET(url, eventBody);
+
+    return this.POST(url, eventBody);
   }
 
   getEventNFHS(id: string){

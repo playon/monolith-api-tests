@@ -10,6 +10,7 @@ export class BaseHTTPClient {
   private context: APIRequestContext;
   private headers: Record<string, string>;
   private eventEmitter: EventEmitter;
+  private requestCounter = 0;
 
   protected constructor(context: APIRequestContext, headers: Record<string, string>, eventEmitter: EventEmitter) {
     this.context = context;
@@ -64,8 +65,11 @@ export class BaseHTTPClient {
     customHeaders?: Record<string, string>  
   ): Promise<TApiResponse<T>> {
 
-    const filename = `./request-data.json`;
+    this.requestCounter += 1;
+    const filename = `./request-data-${this.requestCounter}.json`;
+
     fs.writeFileSync(filename, JSON.stringify(body, null, 2), 'utf8');
+    console.log('JSON-request is saved to request-data.json');    
     const response = await this.context.post(url, {
       headers: customHeaders,  
       data: body,  

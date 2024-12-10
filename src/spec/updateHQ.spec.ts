@@ -23,9 +23,9 @@ test.describe('Create Event in HQ, Update in HQ and check in other systems', () 
     console.log(id);
 
     const ehResponse = await client
-    .getEventEH('gofan-event-id', id.toString())
+    .checkEventEH('gofan-event-id', id.toString())
     .then(res => {
-      expect(res.status()).toBe(200);
+      expect(res.status()).toBe(STATUS.OK);
       return res;
     });
 
