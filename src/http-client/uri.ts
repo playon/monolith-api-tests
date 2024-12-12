@@ -8,7 +8,7 @@ export enum URI_HQ {
 }
 
 export enum URI_EH {
-  EVENTS = `${v1}${events}`
+  EVENTS_FILTER = `${v1}${events}filter`
 }
 
 export enum URI_NFHS {

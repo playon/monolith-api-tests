@@ -116,7 +116,7 @@ interface additional_fields {
   broadcast_end_time: string;
   is_featured: null;
   ticketing_listed: null;
-  streaming_listed: null;
+  streaming_listed: true;
   vod_listed: false;
   updated_via_dedupe: false;
   live_scores_enabled: null;

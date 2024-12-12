@@ -1,5 +1,5 @@
 import { addDaysToDate } from "src/utils/date.utils";
-
+const neededDate = addDaysToDate(14);
 interface monolithEvent {
     genders: string[];
     allDayEvent: boolean;
@@ -79,8 +79,12 @@ export interface level {
     genders: gender[];
 }
 
+interface updateEvent {
+
+}
+
 export class monolith {
-    static createEvent(gender: gender, activityId: Number, accountId: string): monolithEvent {
+    static event(gender: gender, activityId: Number, accountId: string): monolithEvent {
         return{
             genders: [],
             allDayEvent: false,
@@ -96,10 +100,10 @@ export class monolith {
                     genders: [gender]
                     },
             ],
-            startDateTime: addDaysToDate(5),
+            startDateTime: neededDate,
             startTimeType: 'DIFFERENCE_TIME',
             startTimeOptions: {},
-            endDateTime: addDaysToDate(15),
+            endDateTime: neededDate,
             accountId: accountId,
             activityId: activityId,
             reportingLabel: 'Archery',
@@ -115,7 +119,7 @@ export class monolith {
             enableEventValidation: true,
             redemptionWindow: null,
             archived: false,
-            publishDateTime: null,
+            publishDateTime: neededDate,
             featuredAccountIds: [],
             ticketLimitPerOrder: 30,
             glCode: null,
@@ -147,7 +151,7 @@ export class monolith {
                     vodUnlisted: true,
                     level: 'Varsity',
                     gender: gender,
-                    levelByGender: 'Boys-Varsity'
+                    levelByGender: gender+'-Varsity'
                 },
                 {
                     broadcastStartTime: '02:00 PM',
@@ -157,57 +161,28 @@ export class monolith {
                     pixellotKey: 'pxl0725e3659e',
                     unListed: false,
                     vodUnlisted: true,
-                    level: 'Junior Varsity',
+                    level: 'Varsity',
                     gender: gender,
-                    levelByGender: 'Boys-Junior Varsity'
+                    levelByGender: gender+'-Varsity'
                 }
             ],
             featured: false,
             disableQr: true,
             postSeason: false,
             timeZone: 'America/Chicago',
-            specialEventDescription: 'Boys Varsity/Junior Varsity',
+            specialEventDescription: 'Boys Varsity',
             disabledForIndividualSale: false
         };
     }
+
+    /*
+    static updateEvent(id: Number, name: string, rsEventStartDate: string, rsEventEndDate: string){
+        return {
+            description: string,
+            facebookUrl: string,
+
+
+        }
+    }*/
 }
-/*
- genders: string[];
-    allDayEvent: boolean;
-    financialAccountId: string;
-    taggedAccountIds: string[];
-    levels: level[];
-    startDateTime: string;
-    startTimeType: string;
-    startTimeOptions: {};
-    endDateTime: string;
-    accountId: string;
-    activityId: Number;
-    reportingLabel: string;
-    name: string;
-    venueCity: string;
-    venueAddress: string;
-    venueLocation: string;
-    venueName: string;
-    venueId: Number;
-    venueState: string;
-    venueZip: string;
-    eventValidationStartsBefore: Number;
-    enableEventValidation: boolean;
-    redemptionWindow: null;
-    archived: boolean;
-    publishDateTime: string;
-    featuredAccountIds: string[];
-    ticketLimitPerOrder: Number;
-    glCode: null;
-    products: product[];
-    accountsTicket: string[];
-    ticketDistribution: boolean;
-    eventIntegrationDetails: eventIntegrationDetails[];
-    featured: boolean;
-    disableQr: boolean;
-    postSeason: boolean;
-    timeZone: string;
-    specialEventDescription: string;
-    disabledForIndividualSale: boolean;
-*/
+

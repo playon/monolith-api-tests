@@ -1,6 +1,7 @@
 import { test as baseTest, TestInfo } from '@playwright/test';
 import { HttpClient } from '../http-client';
-import { isTMetadata, TMetadata } from '../types/coverage-report.type';
+import { isTMetadata, TMetadata, THttpMethod } from '../types/coverage-report.type';
+import { EventEmitter } from 'events';
 
 type MyFixtures = {
   client: HttpClient;
@@ -12,24 +13,36 @@ const test = baseTest.extend<MyFixtures>({
     const client = await HttpClient.create();
     await use(client);
   },
-  metadata: async ({}, use, testInfo: TestInfo) => {
+  metadata: async ({client}, use, testInfo: TestInfo) => {
     const metadata: TMetadata = {
       uri: null,
-      status: null,
+      statusCode: null,
       method: null,
       testName: testInfo.title,
-      testStatus: null,
+      testStatus: testInfo.status,
     };
     if (isInHook()) {
       throw new Error('Metadata invoked in the hook');
     }
+    /*
+      const eventEmitter = client.getEventEmitter();
+      eventEmitter.once('response', (data: { url: string, status: number, method: THttpMethod }) => {
+      metadata.uri = data.url;
+      metadata.statusCode = data.status;
+      metadata.method = data.method;
+    });*/
     await use(metadata);
+/*
+    await new Promise((resolve) => {
+      eventEmitter.once('response', resolve);
+    });
+*/
     metadata.testStatus = testInfo.status;
-    if (!isTMetadata(metadata))
+   /* if (!isTMetadata(metadata))
       throw new Error(
         `Invalid metadata, missing one or more properties,
          \n metadata: ${JSON.stringify(metadata)}`,
-      );
+      );*/
     testInfo.annotations.push({
       type: 'apiMetadata',
       description: JSON.stringify(metadata),

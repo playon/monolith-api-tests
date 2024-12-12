@@ -8,13 +8,22 @@ import * as fs from 'fs';
 
 export class BaseHTTPClient {
   private context: APIRequestContext;
-  private readonly headers: Record<string, string> = {'Content-Type': 'application/json'};
+  private headers: Record<string, string>;
   private eventEmitter: EventEmitter;
+  private requestCounter = 0;
 
   protected constructor(context: APIRequestContext, headers: Record<string, string>, eventEmitter: EventEmitter) {
     this.context = context;
     this.headers = headers;
     this.eventEmitter = eventEmitter;
+  }
+
+  public getEventEmitter(): EventEmitter {
+    return this.eventEmitter;
+  }
+
+  public getContext(): APIRequestContext {
+    return this.context;
   }
   
   static async create<T extends BaseHTTPClient>(
@@ -29,55 +38,55 @@ export class BaseHTTPClient {
     return new this(context);
   }
 
-  async GET<T>(url: string): Promise<TApiResponse<T>> {
-    const response = await this.context.get(url, { headers: this.headers });
+
+  async GET<T>(url: string, body?: any, headers?: Record<string, string>): Promise<TApiResponse<T>> {
+    const options: TRequestOptions = {
+      extraHTTPHeaders: headers || this.headers, 
+      failOnStatusCode: false, 
+    };
+  
+    if (body) {
+           const serializedBody = JSON.stringify(body);
+      
+      options.params = { body: encodeURIComponent(serializedBody) };
+    }
+  
+    const response = await this.context.get(url, options);
+  
     this.eventEmitter.emit('response', {
       url: response.url(),
       status: response.status(),
       method: 'GET',
     });
+  
     return this.coerceBodyType<T>(response);
   }
+  
 
   async POST<T>(
-    url: string,
-    data: unknown,
-    options?: TRequestOptions,
-    isEmitted = true,
-    httpCredentials?: { username: string; password: string }
+    url: string, 
+    body: unknown, 
+    customHeaders?: Record<string, string>  
   ): Promise<TApiResponse<T>> {
 
-    const filename = `./request-data.json`;
-    fs.writeFileSync(filename, JSON.stringify(data, null, 2), 'utf8');
+    this.requestCounter += 1;
+    const filename = `./request-data-${this.requestCounter}.json`;
 
-    console.log('URL:', url);
-    console.log('username: ' + httpCredentials.username);
-    console.log('password: ' + httpCredentials.password);
+    fs.writeFileSync(filename, JSON.stringify(body, null, 2), 'utf8');
+    console.log('JSON-request is saved to request-data.json');    
+    const response = await this.context.post(url, {
+      headers: customHeaders,  
+      data: body,  
+    });
+    
+
+    this.eventEmitter.emit('response', {
+      url: response.url(),
+      status: response.status(),
+      method: 'POST',
+    });
   
-
-    const headers: Record<string, string> = {
-      ...this.headers,  
-      'Accept': 'application/json', 
-      'Content-Type': 'application/json',
-    };
-
-    if (httpCredentials) {
-      const authHeader = 'Basic ' + Buffer.from(`${httpCredentials.username}:${httpCredentials.password}`).toString('base64');
-      headers['Authorization'] = authHeader; 
-      console.log(JSON.stringify(headers, null, 2)); 
-    }
-  
-    const response = await this.context
-      .post(url, { data, params: options?.params, headers: this.headers })
-      .then(this.coerceBodyType<T>);
-    if (isEmitted) {
-      this.eventEmitter.emit('response', {
-        method: 'POST',
-        url: response.url(),
-        status: response.status(),
-      });
-    }
-    return response;
+    return this.coerceBodyType<T>(response);
   }
 
   async DELETE<T>(url: string): Promise<TApiResponse<T>> {
@@ -90,11 +99,12 @@ export class BaseHTTPClient {
     return this.coerceBodyType<T>(response);
   }
 
-  async PUT<T>(url: string, data: any): Promise<TApiResponse<T>> {
+  async PUT<T>(url: string, data: any, customHeaders?: Record<string, string> ): Promise<TApiResponse<T>> {
     const response = await this.context.put(url, {
       data,
-      headers: this.headers,
+      headers: customHeaders,
     });
+
     this.eventEmitter.emit('response', {
       method: 'PUT',
       url: response.url(),
